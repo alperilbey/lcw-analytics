@@ -12,6 +12,82 @@ istatistiği çıkaran uçtan uca veri analizi projesi.
 - 📈 **Görselleştirme:** matplotlib + plotly HTML dashboard
 - 🤖 **Model:** TF-IDF + LogisticRegression ve (opsiyonel) BERTurk
 
+## 🧠 Model Performansı
+
+Proje, Türkçe e-ticaret yorumları üzerinde eğitilmiş bir **TF-IDF + LogisticRegression** sentiment modeli içerir.
+
+### Eğitim Verisi
+| Kaynak | Örnek Sayısı |
+|--------|-------------|
+| LC Waikiki (scraper) | 273 yorum |
+| Trendyol (Kaggle) | 43.923 yorum |
+| **Toplam** | **44.196 yorum** |
+
+### Model Metrikleri (Test Seti: 8.837 örnek)
+
+| Metrik | Değer |
+|--------|-------|
+| **Accuracy** | **0.809** |
+| **Macro F1** | **0.661** |
+| Weighted F1 | 0.829 |
+
+**Sınıf Bazlı Performans:**
+
+| Sınıf | Precision | Recall | F1 | Destek |
+|-------|-----------|--------|-----|--------|
+| positive | 0.963 | 0.850 | **0.903** | 6.967 |
+| negative | 0.622 | 0.746 | **0.678** | 1.019 |
+| neutral | 0.319 | 0.549 | 0.403 | 851 |
+
+> **Not:** Veri setinde pozitif yorumlar baskın olduğu için (≈%79), `class_weight="balanced"` parametresi ile azınlık sınıfları dengelendi.
+
+### Model Mimarisi
+
+```
+Metin → Temizleme (stopwords, regex) → TF-IDF (1-2 gram, 50k özellik)
+     → LogisticRegression (class_weight=balanced, C=1.0)
+     → {positive | neutral | negative}
+```
+
+### Yeniden Eğitim
+
+```bash
+# Kaggle veri setini indir
+kaggle datasets download -d ahmetfurkandemr/trendyol-product-comments -p data/raw/ --unzip
+
+# Modeli eğit
+python scripts/train_sentiment.py
+
+# Metrikleri görüntüle
+python scripts/evaluate_model.py
+```
+
+### Kullanım
+
+```python
+from lcw_analytics.sentiment import ml_sentiment
+
+label, score = ml_sentiment("Kumaşı çok kaliteli, bayıldım.")
+# → ("positive", 0.94)
+```
+
+## 📊 Örnek Çıktılar
+
+### Dashboard
+
+![Dashboard](outputs/reports/dashboard.html)
+
+### Grafikler
+
+| Puan + Duygu Dağılımı | Kategori + Fiyat |
+|-----------------------|------------------|
+| ![Ratings](outputs/figures/01_ratings_sentiment.png) | ![Category](outputs/figures/02_category_price.png) |
+
+### Kelime Bulutu
+
+![Wordcloud](outputs/figures/03_wordcloud.png)
+
+
 ## 🚀 Hızlı Başlangıç
 
 ```bash
@@ -52,6 +128,19 @@ Detaylar için [MODEL.md](MODEL.md) dosyasına bakın.
 python scripts/train_sentiment.py --model tfidf
 python scripts/train_sentiment.py --model berturk
 ```
+
+### Model Metrikleri (Test Seti: 7.986 örnek, binary)
+
+| Metrik | Değer |
+|--------|-------|
+| **Accuracy** | **0.9274** |
+| **Macro F1** | **0.8582** |
+| **5-fold CV Accuracy** | **0.9294 ± 0.0047** |
+| **5-fold CV Macro F1** | **0.8586 ± 0.0076** |
+
+> **Not:** Model, 3-sınıf (pos/neutral/neg) yerine **binary (pos/neg)** olarak eğitildi. 
+> 3 yıldızlı (neutral) yorumlar eğitim dışı bırakıldı; bu, %81'den %93 accuracy'ye 
+> sıçrama sağladı.
 
 ## ⚠️ Yasal Uyarı
 
