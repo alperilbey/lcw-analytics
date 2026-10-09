@@ -1,0 +1,85 @@
+Eğitim için gerekli komut: 
+
+python scripts/train_sentiment.py
+
+---------------------------------------------------
+Modelin çalıştığını Test Et:
+
+python -c "
+from lcw_analytics.sentiment import ml_sentiment
+
+testler = [
+    'Kumaşı çok kaliteli, bayıldım.',
+    'Berbat bir ürün, iade ettim.',
+    'Fiyatına göre fena değil.',
+    'Rengi fotograftan farklı çıktı.',
+    'Kargo hızlı geldi, teşekkürler.',
+    'Kalitesi düşük, pişman oldum.',
+    'İdare eder, ne iyi ne kötü.',
+    'Beklediğimden çok daha güzel çıktı!',
+]
+for t in testler:
+    label, score = ml_sentiment(t)
+    emoji = {'positive':'✅','negative':'❌','neutral':'➖'}[label]
+    print(f'{emoji} [{label:>8}] {score:+.2f}  |  {t}')
+"
+---------------------------------------------------
+
+Metrikleri Detaylı İncele:
+
+python scripts/evaluate_model.py
+
+---------------------------------------------------
+
+Aynı Veride Kural Tabanlı vs YZ Karşılaştırması:
+
+python -c "
+import pandas as pd
+from lcw_analytics.sentiment import rule_based_sentiment, ml_sentiment
+
+df = pd.read_csv('data/raw/lcw_reviews.csv').dropna(subset=['review_text']).head(50)
+
+df[['rule_label','rule_score']] = df['review_text'].apply(
+    lambda t: pd.Series(rule_based_sentiment(t))
+)
+df[['ml_label','ml_score']] = df['review_text'].apply(
+    lambda t: pd.Series(ml_sentiment(t))
+)
+
+print('=== Kural Tabanlı ===')
+print(df['rule_label'].value_counts())
+print()
+print('=== YZ Modeli ===')
+print(df['ml_label'].value_counts())
+print()
+print('=== Uyuşmazlıklar (ilk 5) ===')
+diff = df[df['rule_label'] != df['ml_label']]
+for _, r in diff.head(5).iterrows():
+    print(f'Yorum: {r[\"review_text\"][:70]}')
+    print(f'  Kural: {r[\"rule_label\"]}  |  YZ: {r[\"ml_label\"]}  |  Yıldız: {r[\"review_rating\"]}')
+    print()
+"
+
+---------------------------------------------------
+
+Sonuçları karşılaştır:
+
+python -c "
+import pandas as pd
+df = pd.read_csv('data/raw/lcw_reviews.csv')
+
+# Yeni sentiment sütunu var mı?
+if 'sentiment' in df.columns:
+    print('Yeni sentiment dağılımı (YZ modeli):')
+    print(df['sentiment'].value_counts())
+    print()
+    print('Ortalama sentiment skoru:', df['sentiment_score'].mean().round(3))
+else:
+    print('sentiment sütunu yok')
+"
+
+---------------------------------------------------
+
+Full Pipeline'ı YZ Modeliyle Çalıştır:
+
+python -m lcw_analytics all

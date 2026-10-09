@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Data (büyük dosyalar)
+data/raw/*.csv
+data/processed/*.csv
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Model (BÖLÜM 2 — küçük modeller git'te, büyükler hariç)
+models/*.pkl
+# models/*.joblib
+models/*.h5
+models/berturk-*/
+!models/.gitkeep
+!models/README.md
+
+# Outputs
+outputs/figures/*.png
+outputs/figures/*.html
+outputs/reports/*
+!outputs/figures/.gitkeep
+!outputs/reports/.gitkeep
+
+# Env
+.env
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

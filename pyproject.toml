@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lcw-analytics"
+version = "0.1.0"
+description = "LC Waikiki ürün ve yorum analizi"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Senin Adın", email = "senin@email.com"}
+]
+dependencies = [
+    "requests>=2.31.0",
+    "beautifulsoup4>=4.12.2",
+    "lxml>=5.1.0",
+    "pandas>=2.1.0",
+    "numpy>=1.26.0",
+    "matplotlib>=3.8.0",
+    "seaborn>=0.13.0",
+    "plotly>=5.18.0",
+    "wordcloud>=1.9.0",
+    "nltk>=3.8.1",
+    "textblob>=0.17.1",
+    "scikit-learn>=1.4.0",
+    "joblib>=1.3.0",
+    "rich>=13.7.0",
+]
+
+[project.scripts]
+lcw = "lcw_analytics.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.ruff]
+line-length = 100
+select = ["E", "F", "I", "W"]
