@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.git/
+data/raw/*.csv
+data/raw/*.sqlite3
+outputs/
+notebooks/
+*.ipynb
+tests/

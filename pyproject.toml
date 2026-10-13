@@ -31,6 +31,7 @@ dependencies = [
 
 [project.scripts]
 lcw = "lcw_analytics.cli:main"
+lcw-api = "lcw_analytics.api.main:app"
 
 [tool.setuptools.packages.find]
 where = ["src"]
