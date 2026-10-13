@@ -27,9 +27,9 @@ models/berturk-*/
 !models/README.md
 
 # Outputs
-outputs/figures/*.png
-outputs/figures/*.html
-outputs/reports/*
+# outputs/figures/*.png
+# outputs/figures/*.html
+# outputs/reports/*
 !outputs/figures/.gitkeep
 !outputs/reports/.gitkeep
 
