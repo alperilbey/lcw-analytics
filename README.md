@@ -75,17 +75,17 @@ label, score = ml_sentiment("Kumaşı çok kaliteli, bayıldım.")
 
 ### Dashboard
 
-![Dashboard](outputs/reports/dashboard.html)
+![Dashboard](https://files.catbox.moe/1ho9o5.png)
 
 ### Grafikler
 
 | Puan + Duygu Dağılımı | Kategori + Fiyat |
 |-----------------------|------------------|
-| ![Ratings](outputs/figures/01_ratings_sentiment.png) | ![Category](outputs/figures/02_category_price.png) |
+| ![Ratings](https://files.catbox.moe/gsg8jn.png) | ![Category](https://files.catbox.moe/04lfpk.png) |
 
 ### Kelime Bulutu
 
-![Wordcloud](outputs/figures/03_wordcloud.png)
+![Wordcloud](https://files.catbox.moe/g3502l.png)
 
 
 ## 🚀 Hızlı Başlangıç
